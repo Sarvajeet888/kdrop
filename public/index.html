@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>K-Drop — send files between devices, free and without an account</title>
+<meta name="description" content="Send files straight from one device to another — phone to PC, iPhone to Windows, laptop to tablet. No account, no installation, nothing stored. Free.">
+<meta name="theme-color" content="#EDE9E3">
+<meta name="color-scheme" content="light only">
+<link rel="canonical" href="/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="K-Drop">
+<meta property="og:title" content="K-Drop — send files between devices">
+<meta property="og:description" content="No account. No installation. Nothing stored. Free.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="K-Drop — send files between devices">
+<meta name="twitter:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+<link rel="stylesheet" href="assets/studio.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "K-Drop",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires a modern browser with WebRTC",
+  "description": "Send files directly between devices in the browser. No account, no installation, nothing stored.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "creator": { "@type": "Organization", "name": "Kalman" }
+}
+</script>
+</head>
+<body class="studio">
+<a class="skip-link" href="#app">Skip to file transfer</a>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="#how" class="hide-sm" data-i18n="nav.how">How it works</a>
+      <a href="docs.html" class="hide-sm" data-i18n="nav.docs">Docs</a>
+      <label class="langpick">
+        <span class="sr">Language</span>
+        <select id="langSelect" aria-label="Language"></select>
+      </label>
+      <span class="state" id="netState" data-i18n="nav.connecting">Connecting</span>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ------------------------------------------------------------ hero -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Free file transfer</p>
+      <h1 data-i18n="hero.title">Send files between devices.</h1>
+      <p class="lead" data-i18n="hero.lead">No account. No installation. No complicated setup.</p>
+      <div class="btn-row hero-actions">
+        <button class="btn btn-go" id="ctaSend" data-i18n="hero.send">Send files</button>
+        <button class="btn" id="ctaReceive" data-i18n="hero.receive">Receive files</button>
+      </div>
+    </div>
+    <div class="transfer-art" aria-hidden="true">
+      <div class="art-top"><span>K—DROP / DIRECT TRANSFER</span><span class="art-mark">↗</span></div>
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="device laptop"><div class="device-screen"><span class="device-glyph">↗</span><i></i><i></i><i></i></div><div class="laptop-base"></div></div>
+      <div class="signal-line"><span></span><span></span><span></span></div>
+      <div class="file-token"><svg viewBox="0 0 32 40" fill="none"><path d="M5 1h14l9 9v29H5zM19 1v10h9M11 21h11M11 27h8" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="device phone"><div class="phone-speaker"></div><span class="device-glyph">↙</span><div class="phone-bar"></div></div>
+      <div class="art-bottom"><span>YOUR DEVICE</span><span class="art-cross">+</span><span>THEIR DEVICE</span></div>
+    </div>
+    </div>
+  </header>
+
+  <!-- ------------------------------------------------------------- app -->
+  <section id="app">
+    <div class="wrap">
+      <div class="workspace-heading"><span class="eyebrow">YOUR TRANSFER SPACE</span><button type="button" id="motionToggle" class="motion-toggle" aria-pressed="false">Pause motion</button></div>
+      <div class="column">
+
+        <div class="env-notice" id="envNotice" hidden></div>
+
+        <!-- step 1 -->
+        <div class="step-card" id="cardPair">
+          <div class="step-head">
+            <span class="step-num">01</span>
+            <h2 id="pairTitle" data-i18n="pair.title">Connect your other device</h2>
+            <span class="note" id="pairNote" data-i18n="pair.waiting">Waiting</span>
+          </div>
+
+          <p class="role-line" id="roleLine" hidden>
+            <span id="roleText"></span>
+            <button class="linkish" type="button" id="roleSwap" data-i18n="role.swap">Switch</button>
+          </p>
+
+          <div class="pair">
+            <div>
+              <p class="code-label" data-i18n="pair.code">Code</p>
+              <p class="code" id="codeOut" data-empty="1" data-i18n="pair.gettingCode">Getting a code…</p>
+              <p class="pinrow" id="pinRow" hidden>
+                <span class="k" data-i18n="pair.pin">PIN</span>
+                <span class="v" id="pinOut"></span>
+              </p>
+            </div>
+            <div class="qr" id="qrBox">
+              <span class="ph" data-i18n="pair.qrHere">QR code appears here</span>
+            </div>
+          </div>
+
+          <div class="copyrow">
+            <input id="linkOut" readonly aria-label="Pairing link" value="">
+            <button class="btn btn-quiet" id="copyLink" type="button" data-i18n="pair.copyLink">Copy link</button>
+          </div>
+
+          <p class="divider" data-i18n="pair.orEnter">or enter the code and PIN from another device</p>
+
+          <div class="scanbox" id="scanBox" hidden>
+            <video id="scanVideo" muted playsinline></video>
+            <p class="scan-hint" data-i18n="scan.aim">Point the camera at the code on the other device</p>
+            <button class="btn btn-quiet" type="button" id="scanStop" data-i18n="scan.cancel">Cancel</button>
+          </div>
+
+          <form class="joinform" id="joinForm">
+            <input id="joinCode" maxlength="11" autocomplete="off" autocapitalize="characters"
+                   spellcheck="false" data-i18n-ph="pair.joinPlaceholder" data-i18n-aria="pair.joinPlaceholder">
+            <button class="btn btn-go" type="submit" data-i18n="pair.connect">Connect</button>
+          </form>
+
+          <div class="btn-row" id="scanRow" hidden style="margin-top:10px">
+            <button class="btn btn-quiet" type="button" id="scanStart" data-i18n="scan.start">Scan a QR code</button>
+          </div>
+
+          <div class="trace-wrap">
+            <canvas id="trace" role="img" aria-label="Connection state, shown as a noisy measurement resolving into a clean estimate"></canvas>
+            <p class="trace-key">
+              <span><i></i> <span data-i18n="pair.measurement">Measurement</span></span>
+              <span class="out"><i></i> <span data-i18n="pair.resolved">Resolved</span></span>
+              <span id="traceState" data-i18n="pair.notConnected">Not connected</span>
+            </p>
+          </div>
+
+          <div class="verify" id="verifyBox" hidden>
+            <p class="verify-label" data-i18n="verify.label">Both devices should show this code</p>
+            <p class="verify-code" id="verifyCode"></p>
+            <div class="verify-actions">
+              <button class="btn btn-quiet" type="button" id="verifyYes" data-i18n="verify.match">They match</button>
+              <button class="linkish" type="button" id="verifyWhy" data-i18n="verify.why">What is this?</button>
+            </div>
+            <p class="verify-note" id="verifyNote" hidden data-i18n="verify.explain">If the two codes are different, something is interfering with the connection. Stop, and do not send anything private.</p>
+          </div>
+
+          <details class="diag" id="diagBox">
+            <summary data-i18n="diag.title">Connection details</summary>
+            <div id="diagBody" class="diag-body"></div>
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn btn-quiet" type="button" id="diagCopy" data-i18n="diag.copy">Copy for a bug report</button>
+            </div>
+          </details>
+
+          <div class="btn-row" style="margin-top:20px">
+            <button class="btn btn-quiet" id="newRoom" type="button" data-i18n="pair.newCode">New code</button>
+            <button class="btn btn-quiet" id="renameBtn" type="button" data-i18n="pair.rename">Name this device</button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="step-card off" id="cardSend">
+          <div class="step-head">
+            <span class="step-num">02</span>
+            <h2 data-i18n="send.title">Choose what to send</h2>
+            <span class="note" id="routeNote" data-i18n="send.firstStep">Step 1 first</span>
+          </div>
+
+          <div class="tabs" id="tabs" role="tablist">
+            <button role="tab" id="tabFiles" aria-selected="true" aria-controls="paneFiles" data-i18n="send.files">Files</button>
+            <button role="tab" id="tabText" aria-selected="false" aria-controls="paneText" data-i18n="send.text">Text</button>
+          </div>
+
+          <div class="pane" id="paneFiles" role="tabpanel" aria-labelledby="tabFiles">
+            <div class="drop" id="drop" tabindex="0" role="button" data-i18n-aria="send.choose">
+              <div class="upload-symbol" aria-hidden="true">↥</div>
+              <h3 data-i18n="send.drop">Drop files here</h3>
+              <p id="dropSub" data-i18n="send.dropSubLocked">Connect the other device first</p>
+              <p class="or">—</p>
+              <div class="btn-row" style="justify-content:center">
+                <button class="btn" type="button" id="pickFiles" data-i18n="send.choose">Choose files</button>
+                <button class="btn btn-quiet" type="button" id="pickFolder" data-i18n="send.chooseFolder">Choose a folder</button>
+              </div>
+            </div>
+            <input type="file" id="fileInput" multiple hidden>
+            <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+          </div>
+
+          <div class="pane" id="paneText" role="tabpanel" aria-labelledby="tabText" hidden>
+            <textarea class="note" id="noteBox" data-i18n-ph="send.notePlaceholder"></textarea>
+            <div class="btn-row" style="margin-top:12px">
+              <button class="btn btn-go" id="sendNote" type="button" disabled data-i18n="send.sendText">Send text</button>
+            </div>
+          </div>
+
+          <div class="await-box" id="awaitBox" hidden>
+            <h3 data-i18n="role.readyTitle">Ready to receive</h3>
+            <p data-i18n="role.readyBody">Nothing to do here. When the other device sends something, you will be asked whether to accept it.</p>
+          </div>
+
+          <div id="notes"></div>
+
+          <p class="sub-label" data-i18n="send.devices">Devices</p>
+          <div class="peers" id="peers">
+            <p class="empty"><span data-i18n="send.noDevices">No other device yet.</span><br><span data-i18n="send.scanPrompt">Scan the code above with your phone.</span></p>
+          </div>
+
+          <p class="sub-label" data-i18n="send.transfers">Transfers</p>
+          <div class="tlist" id="transfers">
+            <p class="empty" data-i18n="send.nothingSent">Nothing sent yet.</p>
+          </div>
+        </div>
+
+        <!-- trusted devices -->
+        <div class="step-card hist" id="cardTrusted" hidden>
+          <div class="step-head">
+            <span class="step-num">·</span>
+            <h2 data-i18n="trust.title">Trusted devices</h2>
+            <span class="note" data-i18n="trust.localOnly">Stored on this device only</span>
+          </div>
+          <div id="trustedList"></div>
+        </div>
+
+        <!-- history -->
+        <div class="step-card hist" id="cardHistory" hidden>
+          <div class="step-head">
+            <span class="step-num">·</span>
+            <h2 data-i18n="send.history">Recent transfers</h2>
+            <button class="linkish" id="clearHistory" type="button" data-i18n="send.clearHistory">Clear history</button>
+          </div>
+          <div id="historyList"></div>
+          <p class="fineprint" data-i18n="send.noHistory">Nothing yet. Transfers you make are remembered on this device only.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------ how it works -->
+  <section class="dark" id="how">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="how.eyebrow">How it works</p>
+      <h2 data-i18n="how.title">The file goes between your devices, not through ours.</h2>
+      <p class="lede" data-i18n="how.lead">Most transfer tools upload your file to a datacentre and download it again. K-Drop opens a connection between the two browsers instead. On the same Wi-Fi, the bytes never leave the building.</p>
+
+      <div class="ill how-art" data-ill="privacy"></div>
+
+      <dl class="how reveal-group">
+        <div>
+          <dt>01</dt>
+          <dd data-i18n="how.s1t">Open K-Drop</dd>
+          <p data-i18n="how.s1b">Open the website on both devices. Nothing to install, nothing to sign up for.</p>
+        </div>
+        <div>
+          <dt>02</dt>
+          <dd data-i18n="how.s2t">Connect</dd>
+          <p data-i18n="how.s2b">Scan the QR code, or type the code and PIN shown on the other device.</p>
+        </div>
+        <div>
+          <dt>03</dt>
+          <dd data-i18n="how.s3t">Send</dd>
+          <p data-i18n="how.s3b">Choose your files. They move directly, and are checked on arrival.</p>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- why -->
+  <section class="plain">
+    <div class="wrap">
+      <div class="column">
+        <h2 data-i18n="why.title">Why K-Drop</h2>
+        <dl class="why">
+          <div>
+            <dt data-i18n="why.fastT">Fast</dt>
+            <dd data-i18n="why.fastB">Direct device-to-device transfers whenever the network allows it.</dd>
+          </div>
+          <div>
+            <dt data-i18n="why.privateT">Private</dt>
+            <dd data-i18n="why.privateB">No permanent storage. Your files are never written to our disks.</dd>
+          </div>
+          <div>
+            <dt data-i18n="why.simpleT">Simple</dt>
+            <dd data-i18n="why.simpleB">No accounts, no software, no settings to work through.</dd>
+          </div>
+          <div>
+            <dt data-i18n="why.everywhereT">Everywhere</dt>
+            <dd data-i18n="why.everywhereB">Computers, phones and tablets, in any modern browser.</dd>
+          </div>
+        </dl>
+
+        <div class="ill why-art" data-ill="transfer"></div>
+
+        <p class="sub-label" style="margin-top:36px" data-i18n="devices.title">Works on</p>
+        <ul class="platforms">
+          <li>Windows</li><li>macOS</li><li>Linux</li><li>Android</li><li>iPhone</li><li>iPad</li>
+        </ul>
+
+        <p class="sub-label" style="margin-top:36px">Common transfers</p>
+        <ul class="routes">
+          <li><a href="phone-to-pc.html">Phone to PC</a></li>
+          <li><a href="pc-to-phone.html">PC to phone</a></li>
+          <li><a href="android-to-pc.html">Android to PC</a></li>
+          <li><a href="iphone-to-pc.html">iPhone to PC</a></li>
+          <li><a href="iphone-to-windows.html">iPhone to Windows</a></li>
+          <li><a href="mac-to-android.html">Mac to Android</a></li>
+          <li><a href="pc-to-pc.html">PC to PC</a></li>
+          <li><a href="send-large-files.html">Large files</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- faq -->
+  <section class="plain" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="column">
+        <div class="ill why-art" data-ill="pairing" style="margin-bottom:26px"></div>
+        <h2 data-i18n="faq.title">Questions</h2>
+
+        <div class="qa">
+          <details>
+            <summary data-i18n="faq.q1">Is K-Drop free?</summary>
+            <p data-i18n="faq.a1">Yes. No account, no paid tier, no advertising.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q2">Do I need an account?</summary>
+            <p data-i18n="faq.a2">No. There is nothing to sign up for.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q3">Are my files stored?</summary>
+            <p data-i18n="faq.a3">No.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q4">What is the maximum file size?</summary>
+            <p data-i18n="faq.a4">No practical limit on Chrome and Edge.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q5">Does it work between iPhone and Windows?</summary>
+            <p data-i18n="faq.a5">Yes.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q6">Do I need to install an app?</summary>
+            <p data-i18n="faq.a6">No.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q7">Do both devices need the same Wi-Fi?</summary>
+            <p data-i18n="faq.a7">No, but it is faster if they do.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q8">What happens if I close the tab?</summary>
+            <p data-i18n="faq.a8">The transfer stops.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company" data-i18n="foot.project">a Kalman project</a></span>
+      <span>
+        <a href="docs.html" data-i18n="foot.docs">Docs</a> ·
+        <a href="privacy.html" data-i18n="foot.privacy">Privacy</a> ·
+        <a href="terms.html" data-i18n="foot.terms">Terms</a> ·
+        <a href="security.html">Security</a> ·
+        <a href="status.html">Status</a>
+      </span>
+    </div>
+    <p class="legal">
+      Files move directly between your devices wherever the network allows it. When it does not, they are encrypted
+      on your own device with a key derived from your PIN — which we never receive — and passed through our relay as
+      data we cannot read. Nothing is written to disk on our side, and a session disappears the moment the last
+      device leaves.
+    </p>
+  </div>
+</footer>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="sheet" id="ask" hidden>
+  <div class="box">
+    <h2 data-i18n="ask.title">Incoming files</h2>
+    <p class="who" id="askWho"></p>
+    <div class="files" id="askFiles"></div>
+    <div class="btn-row">
+      <button class="btn btn-go" id="askYes" type="button" data-i18n="ask.accept">Accept</button>
+      <button class="btn btn-quiet" id="askNo" type="button" data-i18n="ask.decline">Decline</button>
+    </div>
+    <p class="fine" data-i18n="ask.onlyKnown">Only accept from a device you recognise in the list.</p>
+  </div>
+</div>
+
+<script type="module" src="assets/app.js"></script>
+<script src="assets/studio.js" defer></script>
+</body>
+</html>

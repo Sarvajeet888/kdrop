@@ -1,0 +1,15 @@
+node_modules/
+.env
+npm-debug.log*
+.DS_Store
+
+# Android signing — must never be committed
+android/android.keystore
+android/*.keystore
+android/*.jks
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+*.aab
+*.apk

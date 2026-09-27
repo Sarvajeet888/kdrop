@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transfer files from phone to PC — free, no cable, no app</title>
+<meta name="description" content="Move photos, videos and documents from an Android phone or iPhone to a Windows, Mac or Linux computer. No cable, no app, no account.">
+<meta name="theme-color" content="#EDE9E3">
+<meta name="color-scheme" content="light only">
+<link rel="canonical" href="/phone-to-pc.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transfer files from phone to PC — free, no cable, no app">
+<meta property="og:description" content="Move photos, videos and documents from an Android phone or iPhone to a Windows, Mac or Linux computer. No cable, no app, no account.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="K-Drop — send files between devices">
+<meta name="twitter:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need a USB cable?","acceptedAnswer":{"@type":"Answer","text":"No. The transfer happens over the network between the two browsers."}},{"@type":"Question","name":"Does this work with an iPhone and a Windows PC?","acceptedAnswer":{"@type":"Answer","text":"Yes. Both run a browser, and that is all K-Drop needs."}},{"@type":"Question","name":"Are the photos uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"On the direct route they never reach our server. If a network blocks that route, they are encrypted on your phone before passing through our relay, which cannot read them."}}]}</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="/">Open K-Drop</a>
+      <a href="docs.html" class="hide-sm">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<main class="route-page">
+  <div class="wrap">
+    <div class="column">
+
+      <p class="crumb"><a href="/">K-Drop</a> · Send files from your phone to your PC</p>
+      <h1>Send files from your phone to your PC</h1>
+      <p class="lede">No cable, no app to install, and nothing uploaded to a cloud drive. Open the same page on both, match the code, and the files move directly between them.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Open K-Drop</a>
+        <a class="btn" href="#steps">See the steps</a>
+      </div>
+
+      <h2 id="steps">Step by step</h2>
+      <ol>
+        <li>On your <strong>computer</strong>, open K-Drop. A six-character code and a four-character PIN appear.</li>
+        <li>On your <strong>phone</strong>, point the camera at the QR code and open the link — or type the code and PIN by hand.</li>
+        <li>The computer shows up in your phone’s device list.</li>
+        <li>On the phone, tap <strong>Choose files</strong> and pick your photos or documents.</li>
+        <li>Accept the transfer on the computer. The files save straight to disk.</li>
+      </ol>
+
+      <h2>Worth knowing</h2>
+      <h3 style="font-size:16px;margin-top:22px">Photos keep their original quality</h3>
+      <p>Nothing is recompressed on the way through. A 48-megapixel photo arrives as the same file that left, byte for byte — unlike most messaging apps.</p>
+      <h3 style="font-size:16px;margin-top:22px">Works without Wi-Fi sharing</h3>
+      <p>Same Wi-Fi is fastest. If the phone is on mobile data and the computer on Wi-Fi it still works, just more slowly.</p>
+      <h3 style="font-size:16px;margin-top:22px">iPhone users</h3>
+      <p>Safari holds the incoming file in memory, so very large videos can fail. Sending <em>from</em> the iPhone is more reliable than receiving on it.</p>
+
+      <h2>Questions</h2>
+      <div class="qa">
+        <details><summary>Do I need a USB cable?</summary><p>No. The transfer happens over the network between the two browsers.</p></details>
+        <details><summary>Does this work with an iPhone and a Windows PC?</summary><p>Yes. Both run a browser, and that is all K-Drop needs.</p></details>
+        <details><summary>Are the photos uploaded anywhere?</summary><p>On the direct route they never reach our server. If a network blocks that route, they are encrypted on your phone before passing through our relay, which cannot read them.</p></details>
+      </div>
+
+      <h2>How it works underneath</h2>
+      <p>K-Drop opens a connection directly between the two browsers. Our server introduces them to each other and then stops being involved — it never sees the file. When a network blocks a direct connection, the file is encrypted on your own device with a key derived from your PIN, which we never receive, and passed through our relay as data we cannot read. Nothing is written to disk on our side.</p>
+      <p>Full detail is in the <a href="docs.html" style="border-bottom:1px solid var(--vermillion);text-decoration:none">documentation</a>.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Send a file now</a>
+      </div>
+
+      <h2>Other transfers</h2>
+      <ul class="routes" style="margin-top:14px">
+          <li><a href="pc-to-phone.html">from your PC to your phone</a></li>
+          <li><a href="android-to-pc.html">from Android to a computer</a></li>
+          <li><a href="iphone-to-pc.html">from an iPhone to a computer</a></li>
+          <li><a href="iphone-to-windows.html">from an iPhone to a Windows PC</a></li>
+          <li><a href="mac-to-android.html">from a Mac to an Android phone</a></li>
+          <li><a href="pc-to-pc.html">between two computers</a></li>
+          <li><a href="send-large-files.html">large files without an upload</a></li>
+      </ul>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company">a Kalman project</a></span>
+      <span><a href="docs.html">Docs</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="security.html">Security</a> · <a href="status.html">Status</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

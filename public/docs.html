@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Drop — documentation</title>
+<meta name="description" content="How K-Drop works, what it needs, how to run and deploy it, and how it handles your files. Built by Kalman.">
+<meta name="theme-color" content="#EDE9E3">
+<meta name="color-scheme" content="light only">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-Drop — documentation">
+<meta property="og:description" content="How K-Drop works, what it does with your files, privacy and terms.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="/assets/og-image.png">
+<link rel="stylesheet" href="assets/kdrop.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks"><a href="/">Open the app</a></div>
+  </div>
+</nav>
+
+<main class="doc">
+  <div class="wrap doc-grid">
+
+    <nav class="doc-nav" aria-label="Documentation sections">
+      <p class="grp">Start</p>
+      <a href="#what">What this is</a>
+      <a href="#company">Who builds it</a>
+      <a href="#use">How to use it</a>
+      <p class="grp">Detail</p>
+      <a href="#how">How it works</a>
+      <a href="#speed">Transfer speed</a>
+      <a href="#limits">Limits</a>
+      <a href="#roadmap">What is next</a>
+      <a href="#languages">Languages</a>
+      <a href="#history">Transfer history</a>
+      <a href="#selfhost">Run your own copy</a>
+      <p class="grp">Legal</p>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="data-retention.html">Data retention</a>
+      <a href="terms.html">Terms</a>
+      <a href="acceptable-use.html">Acceptable use</a>
+      <a href="security.html">Security</a>
+    </nav>
+
+    <article>
+
+      <p class="eyebrow">Documentation · v1.0.0</p>
+      <h1>K-Drop</h1>
+      <p class="sub">Send a file from the device in your hand to the one on the desk. It goes directly between them. Nothing is uploaded, nothing is stored, and no account is involved.</p>
+
+      <dl class="spec">
+        <div><dt>Product</dt><dd>K-Drop</dd></div>
+        <div><dt>Team</dt><dd>Two people</dd></div>
+        <div><dt>Cost</dt><dd class="on">Free, open</dd></div>
+        <div><dt>Works on</dt><dd>Any browser</dd></div>
+      </dl>
+
+      <!-- ============================================================ -->
+      <h2 id="what">What this is</h2>
+      <p>K-Drop is a web page that moves files between two devices. You open it on both, match a six-character code, and the transfer runs over a direct browser-to-browser connection. On a shared Wi-Fi network the bytes never leave the building.</p>
+      <p>It exists because the obvious alternatives all have a cost. Emailing a file to yourself caps out at 25 MB. Cloud drives upload the whole thing to a datacentre and back down again, which is slow and leaves a copy behind. Cable transfers need the right cable and the right drivers. Installed transfer apps have historically paid for themselves with advertising and background data collection.</p>
+      <p>K-Drop does the one job and stops there. No feed, no rewards, no notifications, no installer.</p>
+
+      <div class="callout">
+        <strong>The short version</strong>
+        <p>Two browsers, one code, one direct connection. The server introduces the devices and then gets out of the way.</p>
+      </div>
+
+      <!-- ============================================================ -->
+      <h2 id="company">Who builds it</h2>
+      <p>K-Drop is built and run by the two people behind <strong>Kalman</strong> — Om Pilaji and Sarvajeet Bajikar. We are engineering students in India. There is no team behind us and no funding.</p>
+
+      <p>Kalman is being incorporated as Kalman Consultancy Services Private Limited. Registration is with our CA and not yet complete. We build software across enterprise systems, education, AI, semiconductors, space and finance — and we do consulting alongside it, because consulting is what pays while products are unfinished.</p>
+
+      <div class="callout">
+        <strong>Where K-Drop sits</strong>
+        <p>K-Drop is a free tool we built and released, not something we sell. It has no pricing, no paid tier and no plan to get one. If it stops being worth running we will say so rather than quietly monetising it.</p>
+        <p>Our commercial work is elsewhere. K-Drop exists because the problem annoyed us and the solution is small enough to give away.</p>
+      </div>
+
+      <h3>Why it is called what it is</h3>
+      <p>A Kalman filter takes a noisy measurement and produces a converged estimate — signal recovered from noise. That is where the company name comes from, and it is why the connection indicator on the front page is a noisy line resolving into a clean one rather than a spinner. Iron is the raw measurement. Vermillion is the resolved state. The same rule holds in every chart and interface we build.</p>
+
+      <p>K-Drop applies the same idea to a dull problem: remove everything that is not the file, and move what is left.</p>
+
+      <!-- ============================================================ -->
+      <h2 id="use">How to use it</h2>
+      <ol>
+        <li>Open the site on the sending device. A six-character code and a four-character PIN appear under step 01.</li>
+        <li>Open the same site on the receiving device — scan the QR code, or type the code and then the PIN into the join box. Both are required — the PIN is what encrypts your files if the network forces the slower route, so K-Drop will not let you pair without it.</li>
+        <li>The second device appears in the device list, and the trace under step 01 settles. It will read <strong>Direct</strong> or <strong>Relayed</strong>.</li>
+        <li>Drag files onto the drop zone, choose a folder, or paste an image straight onto the page.</li>
+        <li>The receiving device is asked to accept. Once it does, the transfer starts.</li>
+      </ol>
+
+      <h3>Trusted devices</h3>
+      <p>After a transfer works, K-Drop offers to remember the other device. Accept, and next time it will not ask you to approve each transfer from that device.</p>
+      <p>This is bound to a secret, not a name. On the first pairing the two devices agree a random value that neither we nor anyone else ever sees. To be recognised later, a device has to prove it holds that secret by answering a fresh challenge — so a device that merely calls itself by a familiar name is treated as a stranger.</p>
+      <p>The list lives in your browser, never on our server. You can turn off automatic accepting for any device, or forget it entirely, from the trusted devices panel.</p>
+
+      <h3>Seeing what you are sending</h3>
+      <p>Pick some files and K-Drop shows small previews of them. Photos get a real thumbnail; everything else gets a mark for its type. These are made on your own device from the file you already have, and are never sent anywhere — they exist to catch the mistake people actually make, which is picking the wrong photo.</p>
+      <p>When a transfer finishes you get a summary: how many files, how large, how long it took, the speed, and which route it used.</p>
+
+      <h3>Leaving the app mid-transfer</h3>
+      <p>If you switch to another app and come back, K-Drop picks the transfer up where it stopped. The phone will usually have frozen the page and dropped the connection while you were away; returning asks the other device what it actually received and continues from exactly there.</p>
+      <p><strong>Closing the tab is different, and it stops the transfer.</strong> When a browser tab closes, the page and everything in it stop existing — the connection, the file, the keys. No website can survive that, which is why transfers keep running in apps like AirDrop but not here. K-Drop asks your phone to keep the screen on while a transfer is running, which prevents the most common accidental version of this.</p>
+      <p>A true background transfer would need a native Android app running a foreground service. That is a different piece of software, and it is on the list rather than in the product.</p>
+
+      <h3>Sending or receiving</h3>
+      <p>The two buttons at the top decide what the page shows you. Choosing <strong>Receive</strong> puts the code box first and takes the file controls away, because a receiver has nothing to choose. Choosing <strong>Send</strong> does the opposite. Either device can do either job, and you can switch at any point — the buttons only change what is in front of you.</p>
+
+      <h3>If something is not available</h3>
+      <p>K-Drop checks what your browser and connection can actually do and says so at the top of the page rather than failing quietly. The common one: opening the site over a plain <code>http://</code> address on a local network means the browser will not provide the encryption the fallback route uses, and will not let a page save straight to a folder. Transfers still work and are still encrypted by the browser itself. A deployed site over <code>https</code> has everything switched on.</p>
+
+      <h3>On a phone</h3>
+      <p>K-Drop follows your system's light or dark setting. If your browser supports it, you can scan the other device's QR code from inside the page rather than leaving for the camera app — where it does not, typing the code and PIN works exactly as well.</p>
+      <p>While a transfer is running, K-Drop asks the phone to keep the screen awake, because a sleeping phone stops the transfer. That request is dropped the moment nothing is moving. If you leave the app mid-transfer you will be warned, and the transfer will stop — there is no background mode, and pretending otherwise would just lose your file quietly.</p>
+
+      <h3>The Text tab</h3>
+      <p>For a link, an address, or a Wi-Fi password you would otherwise retype by hand. It arrives on the other device with a copy button.</p>
+
+      <h3>Where received files land</h3>
+      <p>On Chrome and Edge, K-Drop asks once for a folder and then streams each file straight to disk, so a file larger than the device's memory still works. Everywhere else, files are held in memory and a save link appears when the transfer completes.</p>
+
+      <!-- ============================================================ -->
+      <h2 id="languages">Languages</h2>
+      <p>K-Drop is available in English and Hindi. More languages can be added — the site is built so that translating one file adds a language to the menu, and right-to-left layouts already work.</p>
+      <p>We have not added more yet, and that is deliberate. These pages make specific claims about what happens to your files, and a translation of a privacy claim should come from someone who speaks the language rather than from a guess. If you speak a language we do not cover and want to help, the strings live in one file in the source.</p>
+
+      <!-- ============================================================ -->
+      <h2 id="history">Transfer history</h2>
+      <p>K-Drop remembers what you sent and received, in a list under the transfer panel. That list is stored in your own browser and never sent to us. We have no account to attach it to and no reason to know what you moved.</p>
+      <p>It keeps filenames, because that is the only thing that makes the list useful — which is exactly why it stays on your device. Clearing it is one button, and using a private window leaves nothing behind at all.</p>
+
+      <!-- ============================================================ -->
+      <h2 id="selfhost">Run your own copy</h2>
+      <p>K-Drop is small enough to read in an afternoon — one server file and four client files, three dependencies, no build step. If you would rather host it yourself, everything you need is in the README that ships with the source: how to run it, how to deploy it, and every configuration option.</p>
+      <p>You do not need to do any of that to use K-Drop. This is here for people who want to check what the code actually does, or run it on their own network.</p>
+
+      <!-- ============================================================ -->
+      <h2 id="how">How it works</h2>
+
+      <h3>Pairing</h3>
+      <p>One device asks our server for a code. The code leaves out characters that look alike, so nobody misreads a zero as an O across a room. The PIN beside it is made on your own device and is never sent to us. It travels only inside the QR link, in the part of a web address that browsers keep to themselves — which is what lets us forward encrypted data on the slower route without being able to read it.</p>
+
+      <h3>Connecting</h3>
+      <p>Our server passes a few short messages between the two browsers so they can find each other. Once they have, they open a connection directly between themselves and the server stops being involved. It never sees the file.</p>
+      <p>Some networks — a lot of college and office Wi-Fi — block browsers from connecting to each other directly. If that has not worked after about nine seconds, K-Drop falls back to passing the file through our server instead, and tells you on screen that it has. That route is slower, and everything on it is encrypted before it leaves your device.</p>
+
+      <h3>Moving the file</h3>
+      <p>The file is sent in small pieces rather than all at once, and the sender keeps an eye on how much is still waiting to go out. Without that, a large file would pile up faster than the network could clear it and the tab would run out of memory.</p>
+      <p>Every file is fingerprinted as it leaves and again as it arrives. If a single byte is wrong, you are told — rather than quietly handed a file that looks fine and is not.</p>
+
+      <h3>Encryption</h3>
+      <table>
+        <thead><tr><th>Path</th><th>Protection</th></tr></thead>
+        <tbody>
+          <tr><td>Direct</td><td>DTLS-SRTP — mandatory in WebRTC, applied by the browser</td></tr>
+          <tr><td>Relayed</td><td>AES-256-GCM per chunk, under a key the two devices agree fresh each session and then discard</td></tr>
+          <tr><td>Signalling</td><td>TLS via <code>wss://</code> in production</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ============================================================ -->
+      <h2 id="speed">Getting the most speed</h2>
+      <p>Speed is set almost entirely by the path between your two devices, not by K-Drop. The round-trip time shown next to the connection is the number that predicts it.</p>
+      <table>
+        <thead><tr><th>Round trip</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>Under 20ms</td><td>Same Wi-Fi. The fast case — expect tens of megabytes a second.</td></tr>
+          <tr><td>20–80ms</td><td>Nearby, but not the same network. Noticeably slower.</td></tr>
+          <tr><td>Over 80ms</td><td>A long route, often one device on mobile data. Speed drops sharply, because every acknowledgement has to make that trip.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Seeing the actual numbers</h3>
+      <p>Open <strong>Connection details</strong> under step 01 while two devices are connected. It shows the real round-trip time, which network path was chosen, the frame size, and whether the receiving browser can write to disk.</p>
+      <p>The path is the useful one. <code>host/host</code> means the two devices found each other on the same network — the fast case. Anything mentioning <code>relay</code> means the traffic is detouring, and the panel says what would fix it.</p>
+      <p>There is a button to copy all of it as text for a bug report. It deliberately leaves out your session code and PIN, since those are the keys to the session.</p>
+
+      <h3>Three things that actually help</h3>
+      <ol>
+        <li><strong>Put both devices on the same Wi-Fi.</strong> This matters more than everything else combined, often by twenty times or more.</li>
+        <li><strong>Choose a folder when asked.</strong> On Chrome and Edge this writes the file to disk as it arrives instead of holding it in memory, which keeps large transfers fast all the way through.</li>
+        <li><strong>Keep the screen on</strong> during a phone transfer.</li>
+      </ol>
+
+      <h3>What is possible at all</h3>
+      <p>Wi-Fi hardware tops out around 100 MB/s and a gigabit cable around 125 MB/s. Those are the real ceilings — no software can move bytes faster than the wire carries them. On a good local network, tens of megabytes a second is what a working transfer looks like.</p>
+      <p>A relayed connection is slower than a direct one by definition, since the data detours through our server and is encrypted on the way.</p>
+
+      <h2 id="limits">Limits</h2>
+      <p>Stated plainly, because a product page that hides these is not worth trusting.</p>
+      <ul>
+        <li><strong>Both devices must stay open.</strong> There is no mailbox. Close the tab and the transfer stops.</li>
+        <li><strong>One transfer moves at a time.</strong> You can queue more while one is running; they go one after another rather than at once.</li>
+        <li><strong>Two devices at a time on the slower route.</strong> If your network forces the relayed route, keep it to one pair of devices. The direct route handles more.</li>
+        <li><strong>A dropped connection resumes, but the tab must stay open.</strong> If Wi-Fi drops mid-transfer, K-Drop reconnects and continues from where it got to. Reloading the page or closing the tab loses the partial file.</li>
+        <li><strong>Very large files need Chrome or Edge.</strong> Those browsers write the file to your disk as it arrives, so size is not really a limit. Safari and Firefox have to hold it in memory first, so a very large file can fail there.</li>
+        <li><strong>Not a backup tool.</strong> Nothing is retained. That is the design, not a missing feature.</li>
+      </ul>
+
+      <!-- ============================================================ -->
+      <h2 id="roadmap">What is next</h2>
+      <table>
+        <thead><tr><th>Planned</th><th>What it changes for you</th></tr></thead>
+        <tbody>
+          <tr><td>Find devices automatically</td><td>Skip the code when both devices are on the same Wi-Fi</td></tr>
+          <tr><td>Work with no internet</td><td>Open the page on a local network that has no connection out</td></tr>
+          <tr><td>Better connections</td><td>Take the fast direct route on more restrictive networks</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ============================================================ -->
+      <h2 id="legal">Privacy, terms and data</h2>
+      <p>These live on their own pages so their addresses stay stable — a link into a section of a documentation page breaks the moment the documentation is reorganised, and these are the links people rely on.</p>
+      <ul>
+        <li><a href="privacy.html">Privacy policy</a> — what we receive, what we never receive, what is logged</li>
+        <li><a href="data-retention.html">Data retention</a> — a single table of everything kept, and for how long</li>
+        <li><a href="terms.html">Terms of service</a></li>
+        <li><a href="acceptable-use.html">Acceptable use</a> — including what we can and cannot do about content</li>
+        <li><a href="security.html">Security</a> — the model, its limits, and how to report a problem</li>
+      </ul>
+

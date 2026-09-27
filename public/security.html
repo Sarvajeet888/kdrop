@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Drop — security</title>
+<meta name="description" content="How K-Drop protects your files, what it does not protect against, and how to report a vulnerability.">
+<meta name="theme-color" content="#EDE9E3">
+<meta name="color-scheme" content="light only">
+<link rel="canonical" href="/security.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-Drop — security">
+<meta property="og:description" content="The security model, its limits, and how to report a vulnerability.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="/">Open K-Drop</a>
+      <a href="docs.html" class="hide-sm">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<main class="route-page">
+  <div class="wrap">
+    <div class="column">
+
+      <p class="crumb"><a href="/">K-Drop</a> · Security</p>
+      <h1>Security</h1>
+      <p class="lede">What protects your files, what does not, and how to tell us if you find a hole.</p>
+
+      <h2>The model in one paragraph</h2>
+      <p>Two browsers pair with a six-character code and a four-character PIN. The code identifies a session on our server; the PIN never reaches us. The browsers then connect directly and move the file between themselves. If the network blocks a direct connection, the file is encrypted on your own device with a key derived from the PIN and passed through our relay as data we cannot read. Nothing is written to disk on our side.</p>
+
+      <h2>What protects each path</h2>
+      <table>
+        <thead><tr><th>Path</th><th>Protection</th></tr></thead>
+        <tbody>
+          <tr><td>Direct</td><td>DTLS, applied by the browser. Mandatory in WebRTC and not something we can switch off.</td></tr>
+          <tr><td>Relayed</td><td>AES-256-GCM per chunk, under a key agreed fresh for each session by ECDH on P-256. The private halves never leave the device and are discarded when the tab closes.</td></tr>
+          <tr><td>Pairing</td><td>TLS between your browser and our server.</td></tr>
+          <tr><td>Integrity</td><td>A CRC-32 over every file, checked on arrival. A mismatch is reported rather than saved.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The code you can check yourself</h3>
+      <p>When two devices connect, both display a twelve-character code worked out from the encryption keys they agreed. If the codes on the two screens match, nothing interfered with the exchange.</p>
+      <p>Every other check here is done by software. This is the one a person performs, and it is the only one that can catch interference the software cannot reason about. It is offered rather than forced — most transfers do not warrant it, and a prompt nobody reads protects nobody.</p>
+      <p>The code uses the same alphabet as the pairing code, with characters that look alike removed, because it gets read aloud across a room.</p>
+
+      <h3>Forward secrecy</h3>
+      <p>The key that encrypts a relayed transfer is agreed by the two devices at the moment they connect, from throwaway keypairs that exist only for that session. Nothing that could reconstruct it is written down anywhere.</p>
+      <p>This means a recording of today's relayed session cannot be decrypted tomorrow — not by us, not by whoever made the recording, and not by someone who later learns your code and PIN. Earlier versions derived the key from the code and PIN alone, which made the same code produce the same key every time; that is no longer the case.</p>
+      <p>The PIN still does essential work. Our own server relays the public keys during the exchange, so without authentication a malicious relay could substitute its own and read everything. Each public key is therefore sent with a fingerprint computed under the PIN, and a key that does not verify is refused rather than trusted.</p>
+
+      <h3>Why the PIN is not optional</h3>
+      <p>The PIN is the only input to the relay key that we never see. It travels in the fragment of the pairing link — the part after the <code>#</code>, which browsers do not send to servers — or you type it by hand.</p>
+      <p>Joining with only the code would still connect, and would silently lose that protection the moment a network forced the relayed route. A quiet downgrade is worse than a refusal, so K-Drop refuses: pairing without a PIN is rejected in the interface and again in the transport underneath it.</p>
+
+      <h2>What this does not protect against</h2>
+      <p>Stated plainly, because a security page that only lists strengths is marketing.</p>
+      <ul>
+        <li><strong>Someone who can see your screen.</strong> The code and PIN are shown in plain sight. Anyone who reads them within the session's lifetime can join it.</li>
+        <li><strong>A compromised device.</strong> If malware is running on either end, encryption in transit does not help. It reads the file before we ever touch it.</li>
+        <li><strong>Accepting from a stranger.</strong> You are shown what is being sent and by which device, and nothing moves until you accept. That check is yours to make.</li>
+        <li><strong>Traffic analysis on the relay.</strong> We cannot read relayed content, but we can see that a session exists, roughly how much data moved, and when. We do not keep that beyond the session.</li>
+        <li><strong>A malicious server operator.</strong> If someone ran a modified copy of this code, they could serve you altered JavaScript. That is true of every web application, and it is why the source is open — you can read exactly what this one does, or run your own copy.</li>
+      </ul>
+
+      <h2>Filenames</h2>
+      <p>A filename arrives from the other device, so it is treated as untrusted input even in a session you started deliberately.</p>
+      <p>Before anything is written to disk, paths are stripped, control characters and null bytes are removed, Windows reserved names are escaped, and over-long names are trimmed with the extension kept.</p>
+      <p>The one worth explaining: Unicode contains characters that reverse text direction. A file named <code>invoice&#x202E;gnp.exe</code> is displayed by almost every operating system as <code>invoiceexe.png</code> — you see a picture and save a program. Those characters are removed, so the name you are shown is the name that gets saved.</p>
+      <p>If a name had to be changed, or if the file runs when opened, the accept dialog says so. Nothing is blocked — people send installers for good reasons — but the decision is yours to make with the truth in front of you.</p>
+
+      <h2>Hardening on the server</h2>
+      <ul>
+        <li>Content Security Policy, frame denial, MIME-sniffing off, referrer suppressed, HSTS over HTTPS.</li>
+        <li>Rate limits per address on sessions and connections, with a temporary cool-off after repeated abuse.</li>
+        <li>A ceiling on relayed bytes per session.</li>
+        <li>Oversized and malformed control messages rejected before parsing; burst detection on the socket.</li>
+        <li>Repeated wrong session codes treated as guessing and cooled off. Six characters from a 31-character alphabet is roughly 887 million combinations, so guessing is impractical to begin with.</li>
+        <li>Sessions expire after 30 minutes idle, and no connection is held beyond six hours.</li>
+        <li>Operational metrics are not public.</li>
+      </ul>
+
+      <h2>Reporting a vulnerability</h2>
+      <p>If you find something, please tell us before telling anyone else. We would much rather hear it from you.</p>
+      <p><strong>Contact:</strong> security reports go to the Kalman founders. Replace this line with a monitored address before sharing the site publicly — the release gate refuses to pass until you do.</p>
+      <p>Useful things to include: what you did, what happened, what you expected, and how serious you think it is. A rough proof of concept helps more than a scanner report.</p>
+
+      <h3>What we ask</h3>
+      <ul>
+        <li>Give us a reasonable chance to fix it before publishing.</li>
+        <li>Test against your own sessions and your own files, not other people's.</li>
+        <li>No denial-of-service testing against the live service — tell us instead, or run your own copy and test that.</li>
+      </ul>
+
+      <h3>What you can expect</h3>
+      <ul>
+        <li>An acknowledgement that a person has read it.</li>
+        <li>An honest assessment, including if we disagree that it is a problem.</li>
+        <li>Credit when it is fixed, if you want it.</li>
+      </ul>
+      <p>K-Drop is run by two people and is free. We cannot offer a bounty. We can offer a straight answer and a fix.</p>
+
+      <h2>Honest status</h2>
+      <p>Transfers are verified byte-for-byte by automated tests on both the direct and the relayed route, including recovery after a dropped connection. Fourteen automated suites cover abuse handling, hostile input, filename safety, injection, accessibility and load. A full third-party security audit has not been done. The service is in public beta and labelled as such.</p>
+      <p>The operator details are in the <a href="privacy.html" style="border-bottom:1px solid var(--vermillion);text-decoration:none">privacy section</a> of the documentation.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Open K-Drop</a>
+        <a class="btn" href="docs.html">Read the docs</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company">a Kalman project</a></span>
+      <span><a href="docs.html">Docs</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="security.html">Security</a> · <a href="status.html">Status</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

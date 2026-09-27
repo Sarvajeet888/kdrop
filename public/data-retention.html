@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Drop — data retention</title>
+<meta name="description" content="Exactly what K-Drop keeps, where, and for how long.">
+<meta name="theme-color" content="#EDE9E3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171B" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="/data-retention.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-Drop — data retention">
+<meta property="og:description" content="Exactly what K-Drop keeps, where, and for how long.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="/">Open K-Drop</a>
+      <a href="docs.html" class="hide-sm">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<main class="route-page">
+  <div class="wrap">
+    <div class="column">
+
+      <p class="crumb"><a href="/">K-Drop</a> · Data retention</p>
+      <h1>Data retention</h1>
+      <p class="lede">A single table of everything the service touches and how long it survives. If something is not here, we do not keep it.</p>
+      <p class="fineprint" style="margin-top:10px">Last updated 26 August 2026</p>
+
+      <h2>On our server</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Where</th><th>Lifetime</th></tr></thead>
+        <tbody>
+          <tr><td>Session code and its members</td><td>Memory</td><td>Until the last device leaves, or 30 minutes idle</td></tr>
+          <tr><td>Peer identifier, device name, device type</td><td>Memory</td><td>Length of the connection</td></tr>
+          <tr><td>IP address, for rate limiting</td><td>Memory</td><td>Up to one hour after last activity</td></tr>
+          <tr><td>Temporary block on an abusive source</td><td>Memory</td><td>15 minutes by default</td></tr>
+          <tr><td>Relayed file data</td><td>Never stored</td><td>Forwarded and discarded immediately</td></tr>
+          <tr><td>Any file on the direct route</td><td>Never reaches the server</td><td>—</td></tr>
+          <tr><td>Operational logs (no IPs, no codes, no filenames)</td><td>Hosting provider</td><td>As long as the provider retains them, typically days</td></tr>
+        </tbody>
+      </table>
+      <p>There is no database and no object storage. A server restart erases everything in the first six rows.</p>
+
+      <h2>On your device</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Lifetime</th></tr></thead>
+        <tbody>
+          <tr><td>Transfer history — filenames, sizes, dates</td><td>Until you clear it, or clear site data</td></tr>
+          <tr><td>Device name and language choice</td><td>Until you clear site data</td></tr>
+          <tr><td>Offline copy of the site's own files</td><td>Until you clear site data</td></tr>
+          <tr><td>Files handed over by the share sheet</td><td>Deleted as soon as the page collects them, within seconds</td></tr>
+          <tr><td>A received file held in memory before saving</td><td>Until you save it or close the tab</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Why the numbers are what they are</h2>
+      <p>The 30-minute session lifetime is long enough to pair two devices and move something large, and short enough that an abandoned code stops being useful quickly.</p>
+      <p>The one-hour rate-limit window is the shortest period over which flooding can be recognised without also punishing someone who simply used the service several times.</p>
+      <p>The relay stores nothing at all because it does not need to: it forwards each piece as it arrives. Storing would be both a privacy cost and a hosting cost, for no benefit.</p>
+
+      <h2>Deletion requests</h2>
+      <p>There is no account, so there is nothing to look up. If you closed the tab more than an hour ago, nothing tied to your session exists on our side. Your own device's history is cleared with one button in the app.</p>
+
+      <h2>Contact</h2>
+      <p>K-Drop is operated by Om Pilaji and Sarvajeet Bajikar, trading as Kalman. Kalman Consultancy Services Private Limited is in the process of being incorporated in India; until that completes, the operators are the two of us personally.</p>
+      <p>For anything on this page, including a security report, see the <a href="security.html" style="border-bottom:1px solid var(--vermillion-text);text-decoration:none">security page</a>.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Open K-Drop</a>
+        <a class="btn" href="docs.html">Documentation</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company">a Kalman project</a></span>
+      <span>
+        <a href="privacy.html">Privacy</a> ·
+        <a href="terms.html">Terms</a> ·
+        <a href="acceptable-use.html">Acceptable use</a> ·
+        <a href="security.html">Security</a> ·
+        <a href="status.html">Status</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

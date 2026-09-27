@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: kdrop
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: ROOM_TTL_MS
+        value: "1800000"
+      # The relay is the only thing that spends bandwidth. Lower this if the
+      # free tier's quota starts looking tight.
+      - key: MAX_RELAY_BYTES
+        value: "2147483648"
+      - key: MAX_ROOMS_PER_IP
+        value: "30"
+      # Render puts one proxy in front of your app.
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      # Set this in the dashboard to reach /api/metrics from outside.
+      # - key: METRICS_TOKEN
+      #   sync: false

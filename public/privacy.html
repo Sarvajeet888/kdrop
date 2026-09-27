@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Drop — privacy policy</title>
+<meta name="description" content="What K-Drop receives, what it never receives, what is kept and for how long.">
+<meta name="theme-color" content="#EDE9E3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171B" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="/privacy.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-Drop — privacy policy">
+<meta property="og:description" content="What K-Drop receives, what it never receives, what is kept and for how long.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="/">Open K-Drop</a>
+      <a href="docs.html" class="hide-sm">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<main class="route-page">
+  <div class="wrap">
+    <div class="column">
+
+      <p class="crumb"><a href="/">K-Drop</a> · Privacy policy</p>
+      <h1>Privacy policy</h1>
+      <p class="lede">Short version: your files do not reach us. Your IP address does, because that is how the internet works, and we say so rather than pretending otherwise.</p>
+      <p class="fineprint" style="margin-top:10px">Last updated 26 August 2026</p>
+
+      <h2>What we never receive</h2>
+      <ul>
+        <li><strong>Your files, on the direct route.</strong> They travel from one browser to the other. Our server is not in the path.</li>
+        <li><strong>Your files in readable form on the relay route.</strong> When a network blocks a direct connection, the file is encrypted on your own device before it leaves, under a key the two devices agree fresh for that session and then throw away. It arrives as ciphertext and is forwarded as ciphertext, and a recording of it cannot be decrypted later even by someone who learns your code and PIN.</li>
+        <li><strong>Your PIN.</strong> It is generated in your browser and travels only in the fragment of the pairing link — the part after the <code>#</code>, which browsers do not transmit to servers — or you type it by hand.</li>
+        <li><strong>Filenames.</strong> They pass directly between your two devices and are never sent to us.</li>
+        <li><strong>An account, an email address, or a phone number.</strong> None is asked for, because none is needed.</li>
+      </ul>
+
+      <h2>What we do receive</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Why</th><th>Kept for</th></tr></thead>
+        <tbody>
+          <tr><td>Your IP address</td><td>Unavoidable — it is how any web request reaches us. Also counted against rate limits so a single source cannot flood the service.</td><td>In memory, up to one hour, then discarded</td></tr>
+          <tr><td>Session code</td><td>So two devices can find each other</td><td>Until the last device leaves, or 30 minutes</td></tr>
+          <tr><td>A random peer identifier</td><td>To route messages within a session</td><td>Length of the connection</td></tr>
+          <tr><td>Device name</td><td>Shown to the other device in your session</td><td>Length of the connection</td></tr>
+          <tr><td>Device type</td><td>A rough guess, used to adapt the wording on the page</td><td>Length of the connection</td></tr>
+          <tr><td>Relayed file data</td><td>Forwarded between your devices when a direct connection is impossible</td><td>Passed through and discarded. Never written to disk, and encrypted so we cannot read it.</td></tr>
+        </tbody>
+      </table>
+      <p>There is no database. Nothing above is written to our disks, and restarting the server erases all of it.</p>
+
+      <h2>Logs</h2>
+      <p>We would rather say we log nothing. That would not be true, and a privacy policy that overstates is worse than one that admits its edges.</p>
+      <p>The server writes an operational line when something notable happens — a session starting, a rate limit triggering, a crash. Our hosting provider retains those lines for a short period.</p>
+      <ul>
+        <li><strong>IP addresses are not written to logs.</strong> Where abuse handling needs to recognise a repeat source, it uses a short one-way hash salted with a random value held only in memory. When the server restarts those labels become meaningless, and they cannot be turned back into an address by anyone, including us.</li>
+        <li><strong>Session codes and PINs are never logged.</strong> A code in a log file is a key to a session.</li>
+        <li><strong>Filenames are never logged</strong>, because they never reach us at all.</li>
+      </ul>
+      <p>Your hosting provider, your network operator, and every network in between can see that a connection happened, from what address, and roughly how much data moved. That is true of every website and no policy of ours changes it. What they cannot see is what you sent.</p>
+
+      <h2>What stays on your own device</h2>
+      <p>K-Drop stores a small amount of data in your browser. None of it is ever sent to us.</p>
+      <table>
+        <thead><tr><th>Stored as</th><th>What it holds</th><th>Clear it by</th></tr></thead>
+        <tbody>
+          <tr><td><code>kdrop.history.v1</code></td><td>Your transfer history — filenames, sizes, dates</td><td>The "Clear history" button, or clearing site data</td></tr>
+          <tr><td><code>kdrop.name</code></td><td>The name you gave this device</td><td>Clearing site data</td></tr>
+          <tr><td><code>kdrop-motion-paused</code></td><td>Your animation preference</td><td>Clearing site data</td></tr>
+          <tr><td><code>kdrop.lang</code></td><td>Your chosen language</td><td>Clearing site data</td></tr>
+          <tr><td><code>kdrop.trusted.v1</code></td><td>Devices you chose to remember, and a shared secret for each</td><td>The "Forget" button, or clearing site data</td></tr>
+          <tr><td><code>kdrop.deviceId</code></td><td>A random label for this browser, so a device you trusted can recognise it again</td><td>Clearing site data</td></tr>
+          <tr><td><code>kdrop-v9-delivery</code> cache</td><td>A copy of the site's own files, so it opens offline. The number changes with each release, and the previous one is deleted.</td><td>Clearing site data</td></tr>
+          <tr><td><code>kdrop-share</code> cache</td><td>Files handed over by the Android share sheet, deleted as soon as the page collects them</td><td>Automatically, within seconds</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Trusted devices</h2>
+      <p>If you choose to remember a device, the two browsers agree a random secret and each stores it locally. That secret never reaches us — it is generated on your device and sent only over the encrypted connection to the other one.</p>
+      <p>The random label for your browser exists so a device you trusted can recognise it next time. It is not tied to you, it is not sent to our server, and clearing site data replaces it.</p>
+      <p>Recognition requires proof: a device must answer a fresh challenge using the shared secret. A device that merely claims a familiar name or label is treated as a stranger.</p>
+
+      <h2>Cookies</h2>
+      <p>K-Drop sets no cookies. There is no tracking and no advertising. The browser storage listed above is functional and stays on your device.</p>
+
+      <h2>Counting whether it worked</h2>
+      <p>When a transfer finishes, your browser sends us a single word: <code>ok</code>, <code>failed</code>, <code>direct</code>, <code>relayed</code>, or <code>resumed</code>. Each one adds 1 to a counter.</p>
+      <p>That message contains nothing else. No filename, no size, no duration, no session reference, no identifier of any kind. There is nothing in it that distinguishes your transfer from anyone else's, and nothing that could be traced back to you — including by us.</p>
+      <p>We do this because a direct transfer never touches our server, so without it we would have no way of knowing whether K-Drop works at all. A drop in the success rate is how we find out something is broken before people have to tell us.</p>
+      <p>We call this counting rather than analytics because that is what it is. Analytics builds a picture of a user; five counters cannot. If that ever changed, this page would change with it.</p>
+
+      <h2>Third parties</h2>
+      <table>
+        <thead><tr><th>Who</th><th>Why</th><th>What they can see</th></tr></thead>
+        <tbody>
+          <tr><td>Google and Twilio public STUN servers</td><td>To discover how your device appears on the network, which is how a direct connection is established</td><td>An IP address. No file data passes through them.</td></tr>
+          <tr><td>Fontshare</td><td>Typefaces</td><td>An IP address and which font was requested</td></tr>
+          <tr><td>Our hosting provider</td><td>Runs the server</td><td>Connection metadata and the operational logs described above</td></tr>
+        </tbody>
+      </table>
+      <p>We do not share anything with anyone else, and there is nothing to sell.</p>
+
+      <h2>Children</h2>
+      <p>K-Drop is not directed at children under 13 and asks for no personal information from anyone.</p>
+
+      <h2>Your rights</h2>
+      <p>We hold no account and no lasting record tied to you, so there is nothing to export and nothing to delete after the fact. Closing the tab ends the session; the last traces in memory expire within the hour. Your transfer history lives in your own browser, and one button clears it.</p>
+      <p>If you believe we hold something about you and want it removed, contact us — but the honest answer is likely to be that we do not have it.</p>
+
+      <h2>Changes</h2>
+      <p>If this policy changes in a way that affects what we receive or keep, the date at the top changes with it. We will not quietly widen what we collect.</p>
+
+      <h2>Contact</h2>
+      <p>K-Drop is operated by Om Pilaji and Sarvajeet Bajikar, trading as Kalman. Kalman Consultancy Services Private Limited is in the process of being incorporated in India; until that completes, the operators are the two of us personally.</p>
+      <p>For anything on this page, including a security report, see the <a href="security.html" style="border-bottom:1px solid var(--vermillion-text);text-decoration:none">security page</a>.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Open K-Drop</a>
+        <a class="btn" href="docs.html">Documentation</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company">a Kalman project</a></span>
+      <span>
+        <a href="privacy.html">Privacy</a> ·
+        <a href="terms.html">Terms</a> ·
+        <a href="acceptable-use.html">Acceptable use</a> ·
+        <a href="security.html">Security</a> ·
+        <a href="status.html">Status</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

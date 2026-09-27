@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # A leaked TURN credential is somebody else's bandwidth bill on your card.
+      - name: Secret scan
+        run: node tests/scan-secrets.js
+
+      - name: Dependency audit
+        run: npm audit --omit=dev --audit-level=moderate
+
+      - name: Syntax check
+        run: |
+          node --check server.js
+          for f in tests/*.js tools/*.js; do node --check "$f"; done
+
+      # Signalling, abuse handling, hostile input and load. No browser needed.
+      - name: Server tests
+        run: npm test
+
+      - name: Install Chrome
+        run: npx --yes @puppeteer/browsers install chrome@stable >> $GITHUB_ENV || true
+
+      # Real transfers, byte-verified, including recovery from a dropped link.
+      - name: Browser tests
+        run: |
+          CHROME_PATH="$(node -e "
+            const {execSync}=require('child_process');
+            try{console.log(execSync('which google-chrome-stable || which chromium-browser || which chromium').toString().trim())}catch{console.log('')}
+          ")"
+          if [ -z "$CHROME_PATH" ]; then
+            echo "No Chrome found — skipping browser suites."
+            exit 0
+          fi
+          CHROME_PATH="$CHROME_PATH" node tests/run.js --browser
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t kdrop:ci .
+
+      # A container that builds but does not answer is not a passing build.
+      - name: Smoke test the container
+        run: |
+          docker run -d --name kdrop -p 3000:3000 kdrop:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:3000/api/health > /dev/null; then
+              echo "healthy"
+              curl -fsS http://localhost:3000/ > /dev/null && echo "homepage ok"
+              curl -fsS http://localhost:3000/robots.txt > /dev/null && echo "robots ok"
+              docker rm -f kdrop
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "container never became healthy"
+          docker logs kdrop
+          exit 1

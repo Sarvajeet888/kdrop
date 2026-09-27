@@ -1,0 +1,73 @@
+{
+  "_comment": [
+    "Bubblewrap configuration for the K-Drop Android app.",
+    "",
+    "Replace every REPLACE_ value before building. host and startUrl must point",
+    "at your live HTTPS domain — Bubblewrap reads the manifest from there, and",
+    "a Trusted Web Activity will not verify against http or localhost.",
+    "",
+    "  npm i -g @bubblewrap/cli",
+    "  bubblewrap init --manifest https://YOUR-DOMAIN/manifest.webmanifest",
+    "  bubblewrap build",
+    "",
+    "Running init will regenerate this file from your live manifest. Keep this",
+    "copy as the reference for the values that matter."
+  ],
+  "packageId": "com.kalman.kdrop",
+  "host": "REPLACE_WITH_YOUR_DOMAIN",
+  "name": "K-Drop",
+  "launcherName": "K-Drop",
+  "display": "standalone",
+  "orientation": "any",
+  "themeColor": "#EDE9E3",
+  "themeColorDark": "#15171B",
+  "navigationColor": "#EDE9E3",
+  "navigationColorDark": "#15171B",
+  "navigationDividerColor": "#C9C3B9",
+  "navigationDividerColorDark": "#15171B",
+  "backgroundColor": "#EDE9E3",
+  "enableNotifications": false,
+  "startUrl": "/?src=app",
+  "iconUrl": "REPLACE_WITH_YOUR_DOMAIN/assets/icon-512.png",
+  "maskableIconUrl": "REPLACE_WITH_YOUR_DOMAIN/assets/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "kdrop"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 2,
+  "shortcuts": [
+    {
+      "name": "Send files",
+      "shortName": "Send",
+      "url": "/?action=send",
+      "chosenIconUrl": "REPLACE_WITH_YOUR_DOMAIN/assets/icon-192.png"
+    },
+    {
+      "name": "Receive files",
+      "shortName": "Receive",
+      "url": "/?action=receive",
+      "chosenIconUrl": "REPLACE_WITH_YOUR_DOMAIN/assets/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "REPLACE_WITH_YOUR_DOMAIN/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "REPLACE_WITH_YOUR_DOMAIN/",
+  "minSdkVersion": 23,
+  "_targetSdk": [
+    "Google Play requires new submissions to target Android 16 (API 36) from",
+    "31 August 2026. Bubblewrap sets this itself, but check it in",
+    "android/app/build.gradle after generating and raise it if it is lower:",
+    "  compileSdkVersion 36",
+    "  targetSdkVersion 36"
+  ]
+}

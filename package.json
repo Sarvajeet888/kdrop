@@ -1,0 +1,40 @@
+{
+  "name": "kdrop",
+  "version": "1.0.0",
+  "description": "K-Drop — device-to-device file transfer. A free tool by Kalman.",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build:pages": "node tools/build-pages.js",
+    "test": "node tests/run.js",
+    "test:all": "node tests/run.js --browser",
+    "test:load": "node tests/load.js 200 6",
+    "scan": "node tests/scan-secrets.js && npm audit --omit=dev",
+    "store:assets": "node tools/store-assets.js",
+    "android:check": "node tools/android-build.js check",
+    "android:verify": "node tools/android-build.js verify",
+    "build:legal": "node tools/build-legal.js",
+    "release": "node tools/release.js check",
+    "release:set": "node tools/release.js set",
+    "benchmark": "node tools/benchmark.js",
+    "cost": "node tools/cost.js"
+  },
+  "keywords": [
+    "file-transfer",
+    "webrtc",
+    "p2p",
+    "kalman",
+    "k-drop"
+  ],
+  "author": "Kalman",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1",
+    "ws": "^8.21.2"
+  }
+}

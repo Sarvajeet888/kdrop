@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transfer files from Mac to Android — free, browser only</title>
+<meta name="description" content="Move files between macOS and an Android phone without Android File Transfer, a cable, or a cloud drive.">
+<meta name="theme-color" content="#EDE9E3">
+<meta name="color-scheme" content="light only">
+<link rel="canonical" href="/mac-to-android.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/icon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transfer files from Mac to Android — free, browser only">
+<meta property="og:description" content="Move files between macOS and an Android phone without Android File Transfer, a cable, or a cloud drive.">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="K-Drop — send files between devices">
+<meta name="twitter:image" content="/assets/og-image.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700&f[]=switzer@400,500&f[]=martian-mono@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kdrop.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need Android File Transfer?","acceptedAnswer":{"@type":"Answer","text":"No. Nothing to install on either device."}},{"@type":"Question","name":"Does it work the other way, Android to Mac?","acceptedAnswer":{"@type":"Answer","text":"Yes, the same session works in both directions."}},{"@type":"Question","name":"Does it work over USB?","acceptedAnswer":{"@type":"Answer","text":"No, this is network-based. No cable involved."}}]}</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="K-Drop, home">
+      <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20l6-9 5 15 5-17 5 19 5-13 5 8" stroke-width="2.5" opacity=".5"/>
+        <path d="M35 20c14 0 22-4 34-4s20 3 30 4" stroke-width="3.5"/>
+        <circle cx="107" cy="20" r="5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span><b>K-Drop</b><small>by Kalman</small></span>
+    </a>
+    <div class="navlinks">
+      <a href="/">Open K-Drop</a>
+      <a href="docs.html" class="hide-sm">Docs</a>
+    </div>
+  </div>
+</nav>
+
+<main class="route-page">
+  <div class="wrap">
+    <div class="column">
+
+      <p class="crumb"><a href="/">K-Drop</a> · Send files from a Mac to an Android phone</p>
+      <h1>Send files from a Mac to an Android phone</h1>
+      <p class="lede">Android File Transfer has been unreliable for years. This needs no cable and no software on either side.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Open K-Drop</a>
+        <a class="btn" href="#steps">See the steps</a>
+      </div>
+
+      <h2 id="steps">Step by step</h2>
+      <ol>
+        <li>On the <strong>Mac</strong>, open K-Drop in Safari or Chrome.</li>
+        <li>On <strong>Android</strong>, scan the QR code with the camera.</li>
+        <li>Drag files from Finder onto the drop area on the Mac.</li>
+        <li>Tap <strong>Accept</strong> on the phone.</li>
+      </ol>
+
+      <h2>Worth knowing</h2>
+      <h3 style="font-size:16px;margin-top:22px">Drag straight from Finder</h3>
+      <p>No file picker needed — drag the selection onto the page.</p>
+      <h3 style="font-size:16px;margin-top:22px">Chrome on the Mac handles bigger files</h3>
+      <p>Safari holds an incoming file in memory. For very large transfers <em>to</em> the Mac, use Chrome. Sending from Safari is fine.</p>
+      <h3 style="font-size:16px;margin-top:22px">Folder structure</h3>
+      <p>Choosing a folder sends every file inside it, with names preserved.</p>
+
+      <h2>Questions</h2>
+      <div class="qa">
+        <details><summary>Do I need Android File Transfer?</summary><p>No. Nothing to install on either device.</p></details>
+        <details><summary>Does it work the other way, Android to Mac?</summary><p>Yes, the same session works in both directions.</p></details>
+        <details><summary>Does it work over USB?</summary><p>No, this is network-based. No cable involved.</p></details>
+      </div>
+
+      <h2>How it works underneath</h2>
+      <p>K-Drop opens a connection directly between the two browsers. Our server introduces them to each other and then stops being involved — it never sees the file. When a network blocks a direct connection, the file is encrypted on your own device with a key derived from your PIN, which we never receive, and passed through our relay as data we cannot read. Nothing is written to disk on our side.</p>
+      <p>Full detail is in the <a href="docs.html" style="border-bottom:1px solid var(--vermillion);text-decoration:none">documentation</a>.</p>
+
+      <div class="cta btn-row">
+        <a class="btn btn-go" href="/">Send a file now</a>
+      </div>
+
+      <h2>Other transfers</h2>
+      <ul class="routes" style="margin-top:14px">
+          <li><a href="phone-to-pc.html">from your phone to your PC</a></li>
+          <li><a href="pc-to-phone.html">from your PC to your phone</a></li>
+          <li><a href="android-to-pc.html">from Android to a computer</a></li>
+          <li><a href="iphone-to-pc.html">from an iPhone to a computer</a></li>
+          <li><a href="iphone-to-windows.html">from an iPhone to a Windows PC</a></li>
+          <li><a href="pc-to-pc.html">between two computers</a></li>
+          <li><a href="send-large-files.html">large files without an upload</a></li>
+      </ul>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span>K-Drop — <a class="parent" href="docs.html#company">a Kalman project</a></span>
+      <span><a href="docs.html">Docs</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="security.html">Security</a> · <a href="status.html">Status</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
