@@ -38,7 +38,7 @@ class MainActivity: Activity() {
     }
     private fun button(label: String, busyDisabled: Boolean=true, action: ()->Unit): Button = Button(this).apply {
         text=label; setOnClickListener { runCatching(action).onFailure { status.text=it.message } }
-        layout.addView(this); if(busyDisabled) buttons.add(this)
+        this@MainActivity.layout.addView(this); if(busyDisabled) buttons.add(this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

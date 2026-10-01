@@ -1,11 +1,15 @@
 name: Native app preview builds
 on:
   push:
+    branches: [main]
     paths: ['native/**', 'desktop/**', 'android-native/**', '.github/workflows/apps.yml']
   pull_request:
     paths: ['native/**', 'desktop/**', 'android-native/**', '.github/workflows/apps.yml']
 permissions:
   contents: read
+concurrency:
+  group: native-apps-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 jobs:
   desktop-ui:
     runs-on: ubuntu-latest

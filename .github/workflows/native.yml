@@ -1,11 +1,15 @@
 name: Native transfer checks
 on:
   push:
+    branches: [main]
     paths: ['native/**', '.github/workflows/native.yml']
   pull_request:
     paths: ['native/**', '.github/workflows/native.yml']
 permissions:
   contents: read
+concurrency:
+  group: native-tests-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     strategy:
