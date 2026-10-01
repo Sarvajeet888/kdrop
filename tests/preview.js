@@ -148,22 +148,22 @@ async function poll(p, fn, l, ms = 30000) {
   check('a summary appears when it finishes', !!summary, summary || '');
   check('the summary states the route', /Direct|Relayed/.test(summary || ''));
 
-  /* ---- adaptive framing ---- */
+  /* ---- bounded framing ---- */
   const frames = await a.evaluate(() => {
     const l = [...window.__kdrop.state.links.values()][0];
     if (!l || l.mode !== 'direct') return null;
     const idle = l.chunkSize;
-    // Pretend the pipe is backing up and see whether frames shrink.
+    // Queue backpressure bounds in-flight data without adding smaller-frame overhead.
     Object.defineProperty(l, 'buffered', { get: () => 3 * 1024 * 1024, configurable: true });
     const busy = l.chunkSize;
     return { idle, busy };
   });
   if (frames) {
-    check('frames shrink when the link backs up', frames.busy < frames.idle,
+    check('frames stay stable when the link backs up', frames.busy === frames.idle,
       `${frames.idle} idle → ${frames.busy} busy`);
     check('frames never exceed the safe ceiling', frames.idle <= 65536, `${frames.idle} bytes`);
   } else {
-    console.log('  skip  adaptive framing (relayed route)');
+    console.log('  skip  direct framing (relayed route)');
   }
 
   await a.close(); await b.close();
