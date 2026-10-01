@@ -115,8 +115,16 @@ class MainActivity: Activity() {
         super.onActivityResult(request,result,data)
         if(result!=RESULT_OK) return
         val uri=data?.data ?: return
-        val flags=data.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        runCatching { contentResolver.takePersistableUriPermission(uri,flags) }
+        val canRead = data.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION != 0
+        val canWrite = data.flags and Intent.FLAG_GRANT_WRITE_URI_PERMISSION != 0
+        runCatching {
+            when {
+                canRead && canWrite -> contentResolver.takePersistableUriPermission(uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                canRead -> contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                canWrite -> contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            }
+        }
         if(request==101) { file=uri;status.text="File selected. Ready to send." }
         if(request==102) { folder=uri;status.text="Destination selected. Ready to receive." }
     }
