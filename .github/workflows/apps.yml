@@ -25,11 +25,12 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Test native protocol
         run: cargo test --manifest-path native/Cargo.toml
-      - name: Install desktop builder
-        run: cargo install tauri-cli --version '^2' --locked
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Build Windows preview
         working-directory: desktop
-        run: cargo tauri build --bundles nsis
+        run: npx --yes @tauri-apps/cli@2 build --bundles nsis
       - uses: actions/upload-artifact@v4
         with:
           name: kdrop-windows-preview
@@ -44,6 +45,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
