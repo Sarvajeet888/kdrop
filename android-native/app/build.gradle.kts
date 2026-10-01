@@ -11,6 +11,8 @@ android {
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
+    // Bouncy Castle modules each include this JVM/OSGi descriptor; Android does not use it.
+    packaging { resources.excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF" }
 }
 dependencies {
     implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
