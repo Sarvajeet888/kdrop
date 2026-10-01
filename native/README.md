@@ -87,8 +87,9 @@ Only LAN/loopback/link-local addresses are accepted by this prototype.
 
 ## Current limits and next work
 
-- **Build status:** this authoring environment has no Rust toolchain; native tests
-  are supplied but have not been executed here. Run CI before distributing binaries.
+- **Build status:** GitHub Actions compiled the native core on Windows and Linux.
+  All nine native tests passed, including encrypted delivery and actual interrupted
+  TLS resume. Desktop/Android client builds and physical-device testing are separate gates.
 - Android/Windows client source has been added separately, including Android
   camera scanning and foreground-service handling. Platform compilation and
   physical-device verification are still pending. Discovery, automatic hotspot
