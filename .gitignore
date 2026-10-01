@@ -13,3 +13,14 @@ android/.gradle/
 android/local.properties
 *.aab
 *.apk
+
+# Native build products and local pairing capabilities
+native/target/
+native/pairing*.txt
+native/pairing*.svg
+native/received/
+desktop/src-tauri/target/
+desktop/src-tauri/gen/
+android-native/.gradle/
+android-native/local.properties
+android-native/**/build/

@@ -28,11 +28,20 @@ export async function readStats(link) {
   for (const s of report.values()) byId.set(s.id, s);
 
   let pair = null;
+  // A succeeded candidate pair is not necessarily the selected transport.
   for (const s of report.values()) {
-    if (s.type === 'candidate-pair' && (s.selected || s.state === 'succeeded')) {
+    if (s.type === 'transport' && s.selectedCandidatePairId) {
+      pair = byId.get(s.selectedCandidatePairId);
+      if (pair) break;
+    }
+  }
+  if (!pair) {
+  for (const s of report.values()) {
+    if (s.type === 'candidate-pair' && (s.selected || (s.nominated && s.state === 'succeeded'))) {
       // Prefer the pair the browser marks as nominated and in use.
       if (!pair || s.nominated) pair = s;
     }
+  }
   }
   if (!pair) return null;
 

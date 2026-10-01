@@ -15,6 +15,7 @@ import * as trust from './trust.js';
 import { paint } from './art.js';
 import { readStats, describeRoute, describeRtt, asText } from './diagnostics.js';
 import { previewAll, thumbnail, kindOf } from './preview.js';
+import { explainSpeed, SpeedMeter } from './speed.js';
 
 const $ = (id) => document.getElementById(id);
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -1333,6 +1334,7 @@ function pumpQueue() {
   setSenderControls(batch.id, sender);
 
   sender.on('progress', (s) => {
+    renderSpeed(batch.id, sender.link, s.confirmed, { paused: sender.paused });
     updateRow(batch.id, s.pct,
       `${fmtBytes(s.sent)} of ${fmtBytes(s.total)}`,
       `${fmtRate(s.rate)} · ${fmtEta(s.eta)} · ${s.mode === 'direct' ? t('pair.direct') : t('pair.relayed')}`);
@@ -1540,6 +1542,7 @@ async function accept() {
   addRow(batch.bid, batch.files.length === 1 ? batch.files[0].name : `${batch.files.length} files`, batch.total, 'Receiving');
 
   recv.on('progress', (s) => {
+    renderSpeed(batch.bid, recv.link, s.received, s);
     updateRow(batch.bid, s.pct, `${fmtBytes(s.received)} of ${fmtBytes(s.total)}`, `${fmtRate(s.rate)} · ${fmtEta(s.eta)} left · ${s.mode}`);
     trace.throughput(s.rate);
   });
@@ -1746,6 +1749,45 @@ function updateRow(id, pct, left, right) {
   el.querySelector('.dt').textContent = right;
 }
 
+/** Each row owns its measurements; no extra timer survives a finished transfer. */
+function renderSpeed(id, link, bytes, extra = {}) {
+  const row = $(`row-${id}`);
+  if (!row || row.classList.contains('done') || row.classList.contains('failed')) return;
+  const now = performance.now();
+  const monitor = row.speedMonitor ||= { meter: new SpeedMeter(), nextStats: 0, stats: null,
+    rendered: -Infinity, writeMs: 0, writeSamples: 0, busy: 0, samples: 0 };
+  if (monitor.link !== link || monitor.mode !== link.mode) {
+    monitor.link = link; monitor.mode = link.mode; monitor.stats = null; monitor.nextStats = 0;
+  }
+  if (now >= monitor.nextStats) {
+    monitor.nextStats = now + 2000;
+    readStats(link).then(stats => {
+      if (monitor.link === link && monitor.mode === link.mode) monitor.stats = stats;
+    }).catch(() => {});
+  }
+  const measured = monitor.meter.update(bytes || 0, now);
+  if (now - monitor.rendered < 1000) return;
+  if (Number.isFinite(extra.writeMs)) {
+    const interval = now - monitor.rendered;
+    monitor.busy = Number.isFinite(interval) && interval > 0
+      ? Math.min(1, Math.max(0, extra.writeMs - monitor.writeMs) / interval) : 0;
+    monitor.samples = extra.writeSamples - monitor.writeSamples;
+    monitor.writeMs = extra.writeMs; monitor.writeSamples = extra.writeSamples;
+  }
+  monitor.rendered = now;
+  const note = explainSpeed({ ...measured, mode: link.mode,
+    stats: monitor.stats, paused: extra.paused, writeBusy: monitor.busy, writeSamples: monitor.samples });
+  let panel = row.querySelector('.speed-panel');
+  if (!panel) {
+    panel = document.createElement('details'); panel.className = 'speed-panel';
+    panel.innerHTML = '<summary>Transfer speed explained</summary><p class="speed-measure"></p><strong class="speed-title"></strong><p class="speed-detail"></p>';
+    row.append(panel);
+  }
+  panel.querySelector('.speed-measure').textContent = `${fmtRate(measured.rate)} received · ${note.route}`;
+  panel.querySelector('.speed-title').textContent = note.title;
+  panel.querySelector('.speed-detail').textContent = note.detail;
+}
+
 /** Pause, resume and cancel buttons attached to the active transfer row. */
 function setSenderControls(id, sender) {
   const el = $(`row-${id}`);
@@ -1787,6 +1829,14 @@ function markRow(id, cls, text) {
   if (cls) el.classList.add(cls);
   el.querySelector('.st').textContent = text;
   if (cls === 'done') el.querySelector('.fill').style.width = '100%';
+  if (cls === 'done' || cls === 'failed') {
+    const title = el.querySelector('.speed-title');
+    const detail = el.querySelector('.speed-detail');
+    if (title) title.textContent = cls === 'done' ? 'Transfer complete' : 'Transfer stopped';
+    if (detail) detail.textContent = cls === 'done'
+      ? 'The receiver confirmed delivery. The speed above is the last measured sample.'
+      : 'The speed above is the last measured sample; see the transfer status for the result.';
+  }
 }
 
 // Declared as a function so it is hoisted — boot() uses it before this point.

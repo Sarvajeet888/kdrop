@@ -1,4 +1,4 @@
-const WebSocket = require('/home/claude/kdrop/node_modules/ws');
+const WebSocket = require('ws');
 const BASE = (process.env.KDROP_URL || 'ws://localhost:3000/ws').replace(/^http/, 'ws');
 const U = BASE.endsWith('/ws') ? BASE : BASE.replace(/\/$/, '') + '/ws';
 const HTTP = U.replace(/^ws/, 'http').replace(/\/ws$/, '');
