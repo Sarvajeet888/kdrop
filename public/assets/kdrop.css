@@ -5,6 +5,11 @@
    Rule: raw input is Iron, resolved output is Vermillion.
    ============================================================ */
 
+.speed-panel { margin-top: 12px; border-top: 1px solid var(--ash-soft); padding-top: 10px; font-size: 13px; line-height: 1.5; }
+.speed-panel summary { cursor: pointer; font-weight: 600; }
+.speed-panel p { margin: 6px 0; }
+.speed-measure { font-variant-numeric: tabular-nums; }
+
 :root {
   --graphite: #15171b;
   --bone: #ede9e3;

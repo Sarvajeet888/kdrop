@@ -21,7 +21,10 @@ const BASE = `http://localhost:${PORT}`;
 
 // Browser suites need Chrome and puppeteer-core; the rest need neither.
 const SUITES = [
+  { name: 'speed', file: 'speed.js', browser: false, server: false },
   { name: 'delivery-engine', file: 'delivery-engine.js', browser: false, server: false },
+  { name: 'delivery-browser', file: 'delivery-browser.js', browser: true, server: true },
+  { name: 'recovery-browser', file: 'recovery-browser.js', browser: true, server: true },
   { name: 'secrets',   file: 'scan-secrets.js', browser: false, server: false },
   { name: 'protocol',  file: 'protocol.js',     browser: false, server: false },
   { name: 'legal',     file: 'legal.js',        browser: false, server: true },

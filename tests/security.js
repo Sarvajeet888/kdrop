@@ -100,8 +100,8 @@ const check = (n, ok, d = '') => { console.log(`  ${ok ? 'ok  ' : 'FAIL'}  ${n}$
 
   /* --------------------------------------------------- QR open redirect - */
   const qrEvil = await fetch(`${BASE}/api/qr?d=${encodeURIComponent('https://evil.example/phish')}`);
-  check('the QR endpoint refuses off-site URLs', qrEvil.status === 400,
-    'otherwise it is a phishing QR generator on your domain');
+  check('the server QR endpoint is absent', qrEvil.status === 404,
+    'pairing QR codes stay client-side and cannot generate phishing URLs through the server');
 
   /* --------------------------------------------------- code strength ---- */
   const server = fs.readFileSync(path.join(ROOT, 'server.js'), 'utf8');

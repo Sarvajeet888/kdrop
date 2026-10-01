@@ -1,0 +1,29 @@
+name: Native transfer checks
+on:
+  push:
+    branches: [main]
+    paths: ['native/**', '.github/workflows/native.yml']
+  pull_request:
+    paths: ['native/**', '.github/workflows/native.yml']
+permissions:
+  contents: read
+concurrency:
+  group: native-tests-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Test encrypted transfers, resume and refusal
+        run: cargo test
+      - name: Build release CLI
+        run: cargo build --release

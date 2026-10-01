@@ -400,6 +400,7 @@ export class Link extends EventTarget {
       console.warn('key exchange', e);
     } finally {
       this.kxStarting = false;
+      this.flushPendingKx();
     }
   }
 
@@ -1015,6 +1016,9 @@ export class Sender extends EventTarget {
       if (this._flowWake) this._flowWake();
       return;
     }
+    if (m.t === 'file-ack' && this.inflight?.meta.fid === m.fid && m.ok === true) {
+      this.confirmed = this.sentBeforeCurrent + this.inflight.file.size;
+    }
     this.receipts.get(`${m.t}:${m.fid || m.bid}`)?.resolve();
   }
 
@@ -1158,6 +1162,7 @@ export class Sender extends EventTarget {
     return {
       bid: this.bid,
       sent: this.sent,
+      confirmed: this.confirmed,
       total: this.total,
       pct: this.total ? (this.sent / this.total) * 100 : 0,
       rate: this.rate,
@@ -1187,6 +1192,8 @@ export class Receiver extends EventTarget {
     this.tick = null;
     this.failed = false;
     this.lastProgress = 0;
+    this.writeMs = 0;
+    this.writeSamples = 0;
   }
 
   emit(t, d) { this.dispatchEvent(new CustomEvent(t, { detail: d })); }
@@ -1361,7 +1368,9 @@ export class Receiver extends EventTarget {
     c.parts = [];
     c.pendingBytes = 0;
     // One write per MiB instead of one per 16–64 KB frame.
-    await c.writer.write(new Blob(parts));
+    const started = performance.now();
+    try { await c.writer.write(new Blob(parts)); }
+    finally { this.writeMs += performance.now() - started; this.writeSamples++; }
   }
 
   async onBytes(buf) {
@@ -1428,6 +1437,8 @@ export class Receiver extends EventTarget {
     const left = this.total - this.received;
     return {
       received: this.received,
+      writeMs: this.writeMs,
+      writeSamples: this.writeSamples,
       total: this.total,
       pct: this.total ? (this.received / this.total) * 100 : 0,
       rate: this.rate,

@@ -9,7 +9,7 @@
 // Bump this on every deploy that changes a file in SHELL. The old cache is
 // deleted on activate, so a stale copy of app.js cannot survive an update and
 // pair against the new protocol.
-const VERSION = 'kdrop-v10-hardening';
+const VERSION = 'kdrop-v11-speed-insights';
 const SHELL = [
   '/',
   '/index.html',
@@ -18,6 +18,8 @@ const SHELL = [
   '/assets/studio.js',
   '/assets/app.js',
   '/assets/core.js',
+  '/assets/speed.js',
+  '/assets/diagnostics.js',
   '/assets/trace.js',
   '/assets/art.js',
   '/assets/trust.js',
